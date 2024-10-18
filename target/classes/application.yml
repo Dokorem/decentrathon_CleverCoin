@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: DecentrathonTelegramMiniApp
+
+  datasource:
+    url: jdbc:postgresql://localhost:5440/clever_coin_database
+    username: CleverCoin_User
+    password: CleverCoin_P@ssw0rd
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    database: postgresql
+
+telegram:
+  bot:
+    token: 7898613339:AAFYXMm2UJMyB2HvnTce5x4fO_N24W-DfCU
+    name: DecentrathonTelegramMiniAppBot
