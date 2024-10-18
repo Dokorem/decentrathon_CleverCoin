@@ -1,5 +1,6 @@
 package decentrathon.telegram_mini_app.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,10 @@ import java.util.List;
 @Table(name = "t_theme")
 public class Theme {
 
+    public Theme(String themeName) {
+        this.themeName = themeName;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -23,9 +28,11 @@ public class Theme {
     private String themeName;
 
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Theory> theories;
 
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Task> tasks;
 
 }

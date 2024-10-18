@@ -1,6 +1,7 @@
 package decentrathon.telegram_mini_app.service.impl;
 
 import decentrathon.telegram_mini_app.dto.TheoryDTO;
+import decentrathon.telegram_mini_app.entity.Theme;
 import decentrathon.telegram_mini_app.entity.Theory;
 import decentrathon.telegram_mini_app.repository.ThemeRepository;
 import decentrathon.telegram_mini_app.repository.TheoryRepository;
@@ -22,19 +23,22 @@ public class TheoryServiceImpl implements TheoryService {
 
     @Override
     @Transactional
-    public Theory createTheory(TheoryDTO dto) {
-        if(this.theoryRepository.existsByTitle(dto.title())) {
+    public Theory createTheory(String title, String content, int difficult, String themeName) {
+        if(this.theoryRepository.existsByTitle(title)) {
             return null;
         }
+        Theme currentTheme = this.themeRepository
+                .findByThemeNameIgnoreCase(themeName);
         Theory theory = Theory.builder()
-                .title(dto.title())
-                .content(dto.content())
-                .difficult(dto.difficult())
-                .theme(this.themeRepository
-                                .findByThemeNameIgnoreCase(dto.themeName()))
+                .title(title)
+                .content(content)
+                .difficult(difficult)
+                .theme(currentTheme)
                 .build();
+        currentTheme.getTheories().add(theory);
+        this.themeRepository.save(currentTheme);
 
-        return this.theoryRepository.save(theory);
+        return theory;
     }
 
     @Override
