@@ -8,18 +8,5 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class TheoryCreateController {
-    @Autowired
-    private TheoryCreateService theoryCreateService;
-    @PostMapping("/createTheory")
-    public ResponseEntity<String> createTheory(@RequestParam String title,
-                                               @RequestParam String content,
-                                               @RequestParam int difficulty,
-                                               @RequestParam String themeName) {
-        return theoryCreateService.theoryCreate(
-                title,
-                content,
-                difficulty,
-                themeName
-        );
-    }
+
 }
