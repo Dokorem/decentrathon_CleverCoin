@@ -16,7 +16,7 @@ public class TaskRestController {
 
     private final TaskService taskService;
 
-    @GetMapping("/getTasks")
+    @PostMapping("/getTasks")
     public ResponseEntity<?> getTasks(
             @RequestParam("difficult") int difficult,
             @RequestParam("themeId") int themeId) {
