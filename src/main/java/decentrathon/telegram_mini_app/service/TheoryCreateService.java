@@ -21,18 +21,15 @@ public class TheoryCreateService {
             int difficulty,
             String themeName
     ) {
-        TheoryDTO theory = new TheoryDTO(
-                title,
-                content,
-                difficulty,
-                themeName
-        );
         if (themeRepository.findByThemeNameIgnoreCase(themeName) == null) {
             return ResponseEntity.ok("not created");
 
         } else {
             theoryService.createTheory(
-                    theory
+                    title,
+                    content,
+                    difficulty,
+                    themeName
             );
             return ResponseEntity.ok("created");
         }
