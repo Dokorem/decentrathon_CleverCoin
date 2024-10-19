@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface TheoryService {
 
-    Theory createTheory(TheoryDTO dto);
+    Theory createTheory(String title, String content, int difficult, String themeName);
 
     List<Theory> findAllTheories();
 

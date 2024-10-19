@@ -12,10 +12,10 @@ import java.util.Optional;
 
 public interface TaskService {
 
-    Task createTask(TaskDTO dto);
+    Task createTask(String question, String[] answers, String correctAnswer, int difficult, String themeName);
 
     Optional<Task> getTaskById(int id);
 
-    List<Task> generateTasksForTheory(Theory theory);
+    List<Task> generateTasksForTheory(int difficult, int themeId);
 
 }

@@ -1,5 +1,6 @@
 package decentrathon.telegram_mini_app.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import decentrathon.telegram_mini_app.utils.TasksAnswersConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "theme_id")
+    @JsonBackReference
     private Theme theme;
 
 }

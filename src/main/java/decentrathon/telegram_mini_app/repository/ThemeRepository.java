@@ -7,4 +7,6 @@ public interface ThemeRepository extends JpaRepository<Theme, Integer> {
 
     Theme findByThemeNameIgnoreCase(String name);
 
+    boolean existsByThemeNameIgnoreCase(String name);
+
 }

@@ -2,6 +2,7 @@ package decentrathon.telegram_mini_app.service.impl;
 
 import decentrathon.telegram_mini_app.dto.TaskDTO;
 import decentrathon.telegram_mini_app.entity.Task;
+import decentrathon.telegram_mini_app.entity.Theme;
 import decentrathon.telegram_mini_app.entity.Theory;
 import decentrathon.telegram_mini_app.repository.TaskRepository;
 import decentrathon.telegram_mini_app.repository.ThemeRepository;
@@ -9,6 +10,9 @@ import decentrathon.telegram_mini_app.repository.TheoryRepository;
 import decentrathon.telegram_mini_app.service.TaskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,18 +29,19 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public Task createTask(TaskDTO dto) {
-        if(this.taskRepository.existsByQuestion(dto.question())) {
+    public Task createTask(String question, String[] answers, String correctAnswer,
+                           int difficult, String themeName) {
+        if(this.taskRepository.existsByQuestion(question)) {
             return null;
         }
-
+        Theme currentTheme = this.themeRepository
+                .findByThemeNameIgnoreCase(themeName);
         Task task = Task.builder()
-                .question(dto.question())
-                .answers(dto.answers())
-                .correctAnswer(dto.correctAnswer())
-                .difficult(dto.difficult())
-                .theme(this.themeRepository
-                        .findByThemeNameIgnoreCase(dto.themeName()))
+                .question(question)
+                .answers(answers)
+                .correctAnswer(correctAnswer)
+                .difficult(difficult)
+                .theme(currentTheme)
                 .build();
 
         return this.taskRepository.save(task);
@@ -48,8 +53,19 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> generateTasksForTheory(Theory theory) {
-        return this.taskRepository.findAll();
+    public List<Task> generateTasksForTheory(int difficult, int themeId) {
+        Theme theme = themeRepository.findById(themeId)
+                .orElse(null);
+
+        if(theme != null) {
+            int minDifficult = difficult - 1;
+            int maxDifficult = difficult + 1;
+            Pageable pageable = PageRequest.of(0, 10);
+
+            return this.taskRepository.generateThemesByTheme(theme, minDifficult, maxDifficult, pageable);
+        } else {
+            return null;
+        }
     }
 
 }
