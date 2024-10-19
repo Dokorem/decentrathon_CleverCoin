@@ -1,6 +1,6 @@
 package decentrathon.telegram_mini_app.config;
 
-import decentrathon.telegram_mini_app.cliient.impl.AIClientImpl;
+import decentrathon.telegram_mini_app.client.impl.AIClientImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

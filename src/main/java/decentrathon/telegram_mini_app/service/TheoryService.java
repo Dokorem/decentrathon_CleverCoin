@@ -1,6 +1,7 @@
 package decentrathon.telegram_mini_app.service;
 
 import decentrathon.telegram_mini_app.dto.TheoryDTO;
+import decentrathon.telegram_mini_app.dto.TheoryResponseDTO;
 import decentrathon.telegram_mini_app.entity.Theory;
 
 import java.util.List;

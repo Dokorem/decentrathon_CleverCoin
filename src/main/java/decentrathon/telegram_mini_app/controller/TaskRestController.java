@@ -24,7 +24,7 @@ public class TaskRestController {
     @Autowired
     private EndTheTestService endTheTestService;
 
-    @GetMapping("/getTasks")
+    @PostMapping("/getTasks")
     public ResponseEntity<?> getTasks(
             @RequestParam("difficult") int difficult,
             @RequestParam("themeId") int themeId) {
