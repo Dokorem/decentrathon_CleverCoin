@@ -1,11 +1,14 @@
 package decentrathon.telegram_mini_app.controller;
 
 import decentrathon.telegram_mini_app.dto.TheoryDTO;
+import decentrathon.telegram_mini_app.dto.TheoryResponseDTO;
 import decentrathon.telegram_mini_app.entity.Theory;
 import decentrathon.telegram_mini_app.service.TheoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api-clever-coin")
@@ -38,9 +41,20 @@ public class TheoryRestController {
     @PostMapping(value = "/getTheories")
     public ResponseEntity<?> getAllTheories() {
         if(this.theoryService != null) {
+            List<TheoryResponseDTO> theoryResponseDTOS = this.theoryService
+                    .findAllTheories()
+                    .stream()
+                    .map(theory -> new TheoryResponseDTO(
+                            theory.getId(),
+                            theory.getTitle(),
+                            theory.getContent(),
+                            theory.getDifficult(),
+                            theory.getTheme().getId()))
+                    .toList();
+
             return ResponseEntity
                     .ok()
-                    .body(this.theoryService.findAllTheories());
+                    .body(theoryResponseDTOS);
         }
 
         return ResponseEntity
@@ -63,9 +77,20 @@ public class TheoryRestController {
     }
 
     @GetMapping("/getTheory")
-    public ResponseEntity<Theory> getTheory(@RequestParam("theoryId") int theoryId) {
+    public ResponseEntity<TheoryResponseDTO> getTheory(@RequestParam("theoryId") int theoryId) {
+        Theory currentTheory = this.theoryService
+                .findTheoryById(theoryId).orElse(null);
+        TheoryResponseDTO dto = new TheoryResponseDTO(
+                currentTheory.getId(),
+                currentTheory.getTitle(),
+                currentTheory.getContent(),
+                currentTheory.getDifficult(),
+                currentTheory.getTheme().getId()
+        );
+
         return ResponseEntity
-                .ok(this.theoryService.findTheoryById(theoryId).orElse(null));
+                .ok()
+                .body(dto);
     }
 
 
