@@ -1,6 +1,6 @@
 package decentrathon.telegram_mini_app.service.impl;
 
-import decentrathon.telegram_mini_app.dto.TheoryDTO;
+import decentrathon.telegram_mini_app.client.AIClient;
 import decentrathon.telegram_mini_app.entity.Theme;
 import decentrathon.telegram_mini_app.entity.Theory;
 import decentrathon.telegram_mini_app.repository.ThemeRepository;
@@ -20,6 +20,8 @@ public class TheoryServiceImpl implements TheoryService {
     private final ThemeRepository themeRepository;
 
     private final TheoryRepository theoryRepository;
+
+    private final AIClient aiClient;
 
     @Override
     @Transactional
@@ -57,6 +59,20 @@ public class TheoryServiceImpl implements TheoryService {
 
     @Override
     public String getShortDescriptionOfTheTheoryById(int theoryId) {
-        return "";
+        Theory currentTheory = this.theoryRepository
+                .findById(theoryId)
+                .orElse(null);
+
+        if(currentTheory != null) {
+            return aiClient
+                    .getShortDescription("Сократи текст, но чтобы смысл и основной посыл остался таким же - "
+                            + currentTheory.getContent())
+                    .getChoices()
+                    .get(0)
+                    .getMessage()
+                    .getContent();
+        } else {
+            return null;
+        }
     }
 }

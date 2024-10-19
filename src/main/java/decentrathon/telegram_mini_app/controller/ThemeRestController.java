@@ -23,7 +23,7 @@ public class ThemeRestController {
         if(dto != null) {
             String themeName = dto.themeName();
             if(themeName != null && !themeName.isEmpty()) {
-                Theme theme = themeService.createTheme(themeName);
+                Theme theme = this.themeService.createTheme(themeName);
 
                 if(theme != null) {
                     return ResponseEntity
@@ -38,11 +38,24 @@ public class ThemeRestController {
                 .body("Ошибка при создании темы, либо тема с таким названием уже существует!");
     }
 
-    @GetMapping("/getThemesNames")
-    public ResponseEntity<?> getThemesNames() {
+    @PostMapping("/getThemes")
+    public ResponseEntity<?> getThemes() {
         return ResponseEntity
                 .ok()
-                .body(themeService.findAllThemes());
+                .body(this.themeService.findAllThemes());
+    }
+
+    @GetMapping("/getThemesNames")
+    public ResponseEntity<?> getThemesNames() {
+        List<String> themesNames = this.themeService
+                .findAllThemes()
+                .stream()
+                .map(Theme::getThemeName)
+                .toList();
+
+        return ResponseEntity
+                .ok()
+                .body(themesNames);
     }
 
 }
