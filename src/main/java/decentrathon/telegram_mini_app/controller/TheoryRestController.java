@@ -4,6 +4,7 @@ import decentrathon.telegram_mini_app.dto.TheoryDTO;
 import decentrathon.telegram_mini_app.entity.Theory;
 import decentrathon.telegram_mini_app.service.TheoryCreateService;
 import decentrathon.telegram_mini_app.service.TheoryService;
+import decentrathon.telegram_mini_app.utils.TheoryConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,10 @@ public class TheoryRestController {
                 .badRequest()
                 .body("Переданный объект пуст!");
     }
-
+    @GetMapping("/getTheory/{id}")
+    public ResponseEntity<TheoryDTO> getTheory(@PathVariable Integer id) {
+        return ResponseEntity.ok(TheoryConverter.toDto(this.theoryService.findTheoryById(id).get()));
+    }
     @GetMapping("/getTheoryShortDescription")
     public ResponseEntity<String> getTheoryShortDescription(@RequestParam("theoryId") int theoryId) {
         String shortTheoryDescription = this.theoryService
